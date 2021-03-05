@@ -57,7 +57,7 @@ class LocalResource extends AbstractResourceListener
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function fetch($id) // get localhost/local/1
+    public function fetch($id) // GET localhost/local/1
     {
         return $this->mapper->fetch($id);
     }
@@ -68,7 +68,7 @@ class LocalResource extends AbstractResourceListener
      * @param  array $params
      * @return ApiProblem|mixed
      */
-    public function fetchAll($params = []) // get localhost/local
+    public function fetchAll($params = []) // GET localhost/local
     {
         return $this->mapper->fetchAll();
     }
@@ -114,8 +114,12 @@ class LocalResource extends AbstractResourceListener
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function update($id, $data)
+    public function update($id, $data) // PUT localhost/local/1
     {
-        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
+        $local = new LocalEntity();
+        $local->id = $id; // não recebe data->id (corpo HTTP)
+        $local->name = $data->name;
+        $local->type_id = $data->type_id;
+        return $this->mapper->save($local);
     }
 }

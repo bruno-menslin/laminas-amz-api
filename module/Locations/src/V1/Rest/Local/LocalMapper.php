@@ -55,5 +55,17 @@ class LocalMapper
             $this->tableGateway->insert($data);
             return;
         }
+        // edit
+        
+        try { // verificar se ja existe no banco
+            $this->fetch($id);
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf(
+                'Cannot update local with identifier %d; does not exist',
+                $id
+            ));
+        }
+        
+        $this->tableGateway->update($data, ['id' => $id]);  
     }
 }
