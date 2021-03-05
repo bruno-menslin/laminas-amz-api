@@ -81,4 +81,34 @@ return [
             ],
         ],
     ],
+    'api-tools-content-validation' => [
+        'Locations\\V1\\Rest\\Local\\Controller' => [
+            'input_filter' => 'Locations\\V1\\Rest\\Local\\Validator',
+        ],
+    ],
+    'input_filter_specs' => [
+        'Locations\\V1\\Rest\\Local\\Validator' => [
+            0 => [
+                'required' => true,
+                'validators' => [],
+                'filters' => [],
+                'name' => 'id',
+                'error_message' => 'ID validation failure',
+            ],
+            1 => [
+                'required' => true,
+                'validators' => [],
+                'filters' => [],
+                'name' => 'name',
+                'error_message' => 'Name validation failure',
+            ],
+            2 => [
+                'required' => true,
+                'validators' => [],
+                'filters' => [],
+                'name' => 'type_id',
+                'error_message' => 'Type_id validation failure',
+            ],
+        ],
+    ],
 ];
