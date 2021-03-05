@@ -91,21 +91,52 @@ return [
             0 => [
                 'required' => false,
                 'validators' => [],
-                'filters' => [],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\ToInt::class,
+                        'options' => [],
+                    ],
+                ],
                 'name' => 'id',
                 'error_message' => 'ID validation failure',
             ],
             1 => [
                 'required' => true,
-                'validators' => [],
-                'filters' => [],
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\StringLength::class,
+                        'options' => [
+                            'max' => '60',
+                            'min' => '1',
+                        ],
+                    ],
+                ],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                    1 => [
+                        'name' => \Laminas\Filter\StringTrim::class,
+                        'options' => [],
+                    ],
+                ],
                 'name' => 'name',
                 'error_message' => 'Name validation failure',
             ],
             2 => [
                 'required' => true,
                 'validators' => [],
-                'filters' => [],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\ToInt::class,
+                        'options' => [],
+                    ],
+                    1 => [
+                        'name' => \Laminas\Filter\ToNull::class,
+                        'options' => [],
+                    ],
+                ],
                 'name' => 'type_id',
                 'error_message' => 'Type_id validation failure',
             ],
