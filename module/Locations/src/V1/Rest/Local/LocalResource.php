@@ -20,7 +20,7 @@ class LocalResource extends AbstractResourceListener
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function create($data) // POST localhost
+    public function create($data) // POST localhost/local
     {
         $local = new LocalEntity();
         $local->id = null;
@@ -35,9 +35,11 @@ class LocalResource extends AbstractResourceListener
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function delete($id)
+    public function delete($id) // DELETE localhost/local/1
     {
-        return new ApiProblem(405, 'The DELETE method has not been defined for individual resources');
+        if ($this->mapper->delete($id)) {
+            return true;
+        }
     }
 
     /**

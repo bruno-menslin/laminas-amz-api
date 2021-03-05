@@ -68,4 +68,9 @@ class LocalMapper
         
         $this->tableGateway->update($data, ['id' => $id]);  
     }
+    
+    public function delete($id)
+    {
+        return $this->tableGateway->delete(['id' => (int) $id]);
+    }
 }
