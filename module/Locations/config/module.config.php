@@ -89,7 +89,7 @@ return [
     'input_filter_specs' => [
         'Locations\\V1\\Rest\\Local\\Validator' => [
             0 => [
-                'required' => true,
+                'required' => false,
                 'validators' => [],
                 'filters' => [],
                 'name' => 'id',

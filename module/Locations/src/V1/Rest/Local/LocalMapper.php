@@ -40,4 +40,20 @@ class LocalMapper
         
         return $row;        
     }
+    
+    public function save(LocalEntity $local)
+    {
+        $data = [
+            'name' => $local->name,
+            'type_id' => $local->type_id,
+        ];
+        
+        $id = (int) $local->id;
+        
+        if ($id === 0) { 
+            // add
+            $this->tableGateway->insert($data);
+            return;
+        }
+    }
 }

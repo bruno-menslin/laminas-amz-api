@@ -3,6 +3,7 @@ namespace Locations\V1\Rest\Local;
 
 use Laminas\ApiTools\ApiProblem\ApiProblem;
 use Laminas\ApiTools\Rest\AbstractResourceListener;
+use Locations\V1\Rest\Local\LocalEntity;
 
 class LocalResource extends AbstractResourceListener
 {
@@ -19,9 +20,13 @@ class LocalResource extends AbstractResourceListener
      * @param  mixed $data
      * @return ApiProblem|mixed
      */
-    public function create($data)
+    public function create($data) // POST localhost
     {
-        return new ApiProblem(405, 'The POST method has not been defined');
+        $local = new LocalEntity();
+        $local->id = null;
+        $local->name = $data->name;
+        $local->type_id = $data->type_id;
+        return $this->mapper->save($local);
     }
 
     /**
