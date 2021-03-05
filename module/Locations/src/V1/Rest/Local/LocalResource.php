@@ -6,6 +6,13 @@ use Laminas\ApiTools\Rest\AbstractResourceListener;
 
 class LocalResource extends AbstractResourceListener
 {
+    protected $mapper;
+    
+    public function __construct($mapper)
+    {
+        $this->mapper = $mapper;
+    }
+    
     /**
      * Create a resource
      *
@@ -58,7 +65,7 @@ class LocalResource extends AbstractResourceListener
      */
     public function fetchAll($params = [])
     {
-        return new ApiProblem(405, 'The GET method has not been defined for collections');
+        return $this->mapper->fetchAll();
     }
 
     /**
