@@ -20,7 +20,11 @@ class LocalMapper
     
     public function fetchAll()
     {
-        return $this->tableGateway->select();
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'name', 'type_id']); 
+        $select->join('local_type', 'local_type.id = locations.type_id', ['type_name' => 'name']);
+
+    	return $this->tableGateway->selectWith($select);
     }
     
     public function fetch($id) 
