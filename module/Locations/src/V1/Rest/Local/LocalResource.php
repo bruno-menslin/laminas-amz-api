@@ -52,9 +52,9 @@ class LocalResource extends AbstractResourceListener
      * @param  mixed $id
      * @return ApiProblem|mixed
      */
-    public function fetch($id)
+    public function fetch($id) // get localhost/local/1
     {
-        return new ApiProblem(405, 'The GET method has not been defined for individual resources');
+        return $this->mapper->fetch($id);
     }
 
     /**
@@ -63,7 +63,7 @@ class LocalResource extends AbstractResourceListener
      * @param  array $params
      * @return ApiProblem|mixed
      */
-    public function fetchAll($params = [])
+    public function fetchAll($params = []) // get localhost/local
     {
         return $this->mapper->fetchAll();
     }

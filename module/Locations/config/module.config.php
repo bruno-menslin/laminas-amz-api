@@ -40,7 +40,7 @@ return [
                 1 => 'POST',
             ],
             'collection_query_whitelist' => [],
-            'page_size' => 25,
+            'page_size' => '10',
             'page_size_param' => null,
             'entity_class' => \Locations\V1\Rest\Local\LocalEntity::class,
             'collection_class' => \Locations\V1\Rest\Local\LocalCollection::class,
