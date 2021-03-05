@@ -9,9 +9,9 @@ class LocalEntity
     
     public function exchangeArray(array $data)
     {
-        $this->id = $data('id');
-        $this->name = $data('name');
-        $this->type_id = $data('type_id');
+        $this->id = $data['id'];
+        $this->name = $data['name'];
+        $this->type_id = $data['type_id'];
     }
     
     public function getArrayCopy()
