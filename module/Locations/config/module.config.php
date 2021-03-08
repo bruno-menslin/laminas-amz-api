@@ -214,6 +214,7 @@ return [
             'http_methods' => [
                 0 => 'POST',
                 1 => 'PATCH',
+                2 => 'GET',
             ],
             'route_name' => 'locations.rpc.local-type',
         ],

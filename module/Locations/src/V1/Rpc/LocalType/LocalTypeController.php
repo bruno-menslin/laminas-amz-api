@@ -45,6 +45,8 @@ class LocalTypeController extends AbstractActionController
                     
                 return $this->tableGateway->update($data, ['id' => $id]);                
                 break;
+            case "GET":
+                return $this->fetchAll();
         }
     }
     
@@ -59,5 +61,15 @@ class LocalTypeController extends AbstractActionController
             ));
         }
         return $row;
+    }
+    
+    public function fetchAll()
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id', 'name']); 
+
+    	$result = $this->tableGateway->selectWith($select);
+
+    	return $result->toArray();
     }
 }
