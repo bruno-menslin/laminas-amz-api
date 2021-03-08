@@ -2,7 +2,7 @@
 namespace Locations\V1\Rpc\LocalType;
 
 use Laminas\Mvc\Controller\AbstractActionController;
-use Laminas\ApiTools\ContentNegotiation\ViewModel;
+use Laminas\ApiTools\Configuration\Exception\RuntimeException;
 
 class LocalTypeController extends AbstractActionController
 {
@@ -16,24 +16,48 @@ class LocalTypeController extends AbstractActionController
     public function localTypeAction()
     {
         $request = $this->getRequest();
-        
-        $content = $request->getContent();
-        $data = json_decode($content);
+        $content = json_decode($request->getContent());
         
         switch ($request->getMethod()) {
             case "POST":
                 
                 $data = [
-                    'name' => $data->name,
+                    'name' => $content->name
                 ];
-
-                $this->tableGateway->insert($data);
-                return;
                 
+                return $this->tableGateway->insert($data);                                
                 break;
             case "PATCH":
-                $method = "PATCH";
+                
+                $id = (int) $content->id;                 
+                $data = [
+                    'name' => $content->name
+                ];
+
+                try {
+                    $this->fetch($id);
+                } catch (RuntimeException $e) {
+                    throw new RuntimeException(sprintf(
+                        'Cannot update local type with identifier %d; does not exist',
+                        $id
+                    ));
+                }
+                    
+                return $this->tableGateway->update($data, ['id' => $id]);                
                 break;
         }
+    }
+    
+    public function fetch($id)
+    {
+        $rowset = $this->tableGateway->select(['id' => $id]);
+        $row = $rowset->current();
+        if (!$row) {
+            throw new RuntimeException(sprintf(
+                'Could not find row with identifier %d',
+                $id
+            ));
+        }
+        return $row;
     }
 }

@@ -190,6 +190,18 @@ return [
                 'name' => 'name',
                 'error_message' => 'Name validation failure',
             ],
+            1 => [
+                'required' => false,
+                'validators' => [],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\ToInt::class,
+                        'options' => [],
+                    ],
+                ],
+                'name' => 'id',
+                'error_message' => 'Id validation failure',
+            ],
         ],
     ],
     'controllers' => [
