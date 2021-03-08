@@ -3,9 +3,10 @@ namespace Locations;
 
 use Laminas\ApiTools\Provider\ApiToolsProviderInterface;
 use Laminas\Db\ResultSet\ResultSet;
-use Locations\V1\Rest\Local\LocalEntity;
 use Laminas\Db\TableGateway\TableGateway;
 use Locations\V1\Rest\Local\LocalMapper;
+use Locations\V1\Rest\Local\LocalEntity;
+use Locations\V1\Rpc\LocalType\LocalTypeEntity;
 
 class Module implements ApiToolsProviderInterface
 {
@@ -23,6 +24,13 @@ class Module implements ApiToolsProviderInterface
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new LocalEntity());
                     return new TableGateway('locations', $dbAdapter, null, $resultSetPrototype);
+                },
+                        
+                'LocalTypeTableGateway' => function($container) {
+                    $dbAdapter = $container->get('laminas-amz-project');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new LocalTypeEntity());
+                    return new TableGateway('local_type', $dbAdapter, null, $resultSetPrototype);
                 },
                         
                 LocalMapper::class => function($container) {
