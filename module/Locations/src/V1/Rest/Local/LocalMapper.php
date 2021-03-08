@@ -25,6 +25,7 @@ class LocalMapper
         $select = $this->tableGateway->getSql()->select();
         $select->columns(['id', 'name', 'type_id']); 
         $select->join('local_type', 'local_type.id = locations.type_id', ['type_name' => 'name']);
+        $select->order('id ASC');
 
     	return $this->tableGateway->selectWith($select);
     }
