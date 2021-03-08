@@ -16,11 +16,22 @@ return [
                     ],
                 ],
             ],
+            'locations.rpc.local-type' => [
+                'type' => 'Segment',
+                'options' => [
+                    'route' => '/localtype',
+                    'defaults' => [
+                        'controller' => 'Locations\\V1\\Rpc\\LocalType\\Controller',
+                        'action' => 'localType',
+                    ],
+                ],
+            ],
         ],
     ],
     'api-tools-versioning' => [
         'uri' => [
             0 => 'locations.rest.local',
+            1 => 'locations.rpc.local-type',
         ],
     ],
     'api-tools-rest' => [
@@ -50,6 +61,7 @@ return [
     'api-tools-content-negotiation' => [
         'controllers' => [
             'Locations\\V1\\Rest\\Local\\Controller' => 'HalJson',
+            'Locations\\V1\\Rpc\\LocalType\\Controller' => 'Json',
         ],
         'accept_whitelist' => [
             'Locations\\V1\\Rest\\Local\\Controller' => [
@@ -57,9 +69,18 @@ return [
                 1 => 'application/hal+json',
                 2 => 'application/json',
             ],
+            'Locations\\V1\\Rpc\\LocalType\\Controller' => [
+                0 => 'application/vnd.locations.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ],
         ],
         'content_type_whitelist' => [
             'Locations\\V1\\Rest\\Local\\Controller' => [
+                0 => 'application/vnd.locations.v1+json',
+                1 => 'application/json',
+            ],
+            'Locations\\V1\\Rpc\\LocalType\\Controller' => [
                 0 => 'application/vnd.locations.v1+json',
                 1 => 'application/json',
             ],
@@ -84,6 +105,9 @@ return [
     'api-tools-content-validation' => [
         'Locations\\V1\\Rest\\Local\\Controller' => [
             'input_filter' => 'Locations\\V1\\Rest\\Local\\Validator',
+        ],
+        'Locations\\V1\\Rpc\\LocalType\\Controller' => [
+            'input_filter' => 'Locations\\V1\\Rpc\\LocalType\\Validator',
         ],
     ],
     'input_filter_specs' => [
@@ -140,6 +164,47 @@ return [
                 'name' => 'type_id',
                 'error_message' => 'Type_id validation failure',
             ],
+        ],
+        'Locations\\V1\\Rpc\\LocalType\\Validator' => [
+            0 => [
+                'required' => true,
+                'validators' => [
+                    0 => [
+                        'name' => \Laminas\Validator\StringLength::class,
+                        'options' => [
+                            'min' => '1',
+                            'max' => '30',
+                        ],
+                    ],
+                ],
+                'filters' => [
+                    0 => [
+                        'name' => \Laminas\Filter\StripTags::class,
+                        'options' => [],
+                    ],
+                    1 => [
+                        'name' => \Laminas\Filter\StringTrim::class,
+                        'options' => [],
+                    ],
+                ],
+                'name' => 'name',
+                'error_message' => 'Name validation failure',
+            ],
+        ],
+    ],
+    'controllers' => [
+        'factories' => [
+            'Locations\\V1\\Rpc\\LocalType\\Controller' => \Locations\V1\Rpc\LocalType\LocalTypeControllerFactory::class,
+        ],
+    ],
+    'api-tools-rpc' => [
+        'Locations\\V1\\Rpc\\LocalType\\Controller' => [
+            'service_name' => 'LocalType',
+            'http_methods' => [
+                0 => 'POST',
+                1 => 'PATCH',
+            ],
+            'route_name' => 'locations.rpc.local-type',
         ],
     ],
 ];
