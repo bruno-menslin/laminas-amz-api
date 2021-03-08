@@ -12,10 +12,12 @@ class LocalMapper
     // precisa relacionar o mapeamento com uma tabela do banco,
     // utilizar um TableGateway
     protected $tableGateway;
+    protected $typeTableGateway;
     
-    public function __construct(TableGateway $tableGateway)
+    public function __construct(TableGateway $tableGateway, TableGateway $typeTableGateway)
     {
         $this->tableGateway = $tableGateway;
+        $this->typeTableGateway = $typeTableGateway;
     }
     
     public function fetchAll()
@@ -45,19 +47,44 @@ class LocalMapper
         return $row;        
     }
     
+    public function fetchType($id)
+    {
+        $rowset = $this->typeTableGateway->select(['id' => $id]);
+        $row = $rowset->current();
+        if (!$row) {
+            throw new RuntimeException(sprintf(
+                'Could not find row with identifier %d',
+                $id
+            ));
+        }
+        return $row;
+    }
+    
     public function save(LocalEntity $local)
     {
-        $data = [
-            'name' => $local->name,
-            'type_id' => $local->type_id,
-        ];
-        
+        $data = [];        
         $id = (int) $local->id;
         
+        try { 
+            $this->fetchType($local->type_id);
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf(
+                'Local type with identifier %d; does not exist',
+                $local->type_id
+            ));
+        }
+        
         if ($id === 0) { 
-            // add
-            $this->tableGateway->insert($data);
-            return;
+            // add   
+            if ($local->name === null) {
+                throw new RuntimeException(sprintf('Cannot create local without name'));
+            } else if ($local->type_id === null) {
+                throw new RuntimeException(sprintf('Cannot create local without local_type'));
+            }
+            
+            $data['name'] = $local->name;
+            $data['type_id'] = $local->type_id;            
+            return $this->tableGateway->insert($data);        
         }
         // edit
         
@@ -69,8 +96,20 @@ class LocalMapper
                 $id
             ));
         }
+                
+        $oldLocal = $this->fetch($id);        
+        if ($local->name !== $oldLocal->name && $local->name !== null) {
+            $data['name'] = $local->name;
+        }        
+        if ($local->type_id != $oldLocal->type_id && $local->type_id !== null) {
+            $data['type_id'] = $local->type_id;
+        }
         
-        $this->tableGateway->update($data, ['id' => $id]);  
+        if (empty($data)) {
+            throw new RuntimeException(sprintf('Nothing to update'));
+        }
+                
+        return $this->tableGateway->update($data, ['id' => $id]);  
     }
     
     public function delete($id)

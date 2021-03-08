@@ -83,8 +83,12 @@ class LocalResource extends AbstractResourceListener
      * @return ApiProblem|mixed
      */
     public function patch($id, $data)
-    {
-        return new ApiProblem(405, 'The PATCH method has not been defined for individual resources');
+    {        
+        $local = new LocalEntity();
+        $local->id = $id;
+        $local->name = $data->name;
+        $local->type_id = $data->type_id;
+        return $this->mapper->save($local);
     }
 
     /**
@@ -118,10 +122,6 @@ class LocalResource extends AbstractResourceListener
      */
     public function update($id, $data) // PUT localhost/local/1
     {
-        $local = new LocalEntity();
-        $local->id = $id; // não recebe data->id (corpo HTTP)
-        $local->name = $data->name;
-        $local->type_id = $data->type_id;
-        return $this->mapper->save($local);
+        return new ApiProblem(405, 'The PUT method has not been defined for individual resources');
     }
 }

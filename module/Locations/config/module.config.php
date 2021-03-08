@@ -43,8 +43,7 @@ return [
             'entity_http_methods' => [
                 0 => 'GET',
                 1 => 'PATCH',
-                2 => 'PUT',
-                3 => 'DELETE',
+                2 => 'DELETE',
             ],
             'collection_http_methods' => [
                 0 => 'GET',
@@ -125,7 +124,7 @@ return [
                 'error_message' => 'ID validation failure',
             ],
             1 => [
-                'required' => true,
+                'required' => false,
                 'validators' => [
                     0 => [
                         'name' => \Laminas\Validator\StringLength::class,
@@ -149,7 +148,7 @@ return [
                 'error_message' => 'Name validation failure',
             ],
             2 => [
-                'required' => true,
+                'required' => false,
                 'validators' => [],
                 'filters' => [
                     0 => [

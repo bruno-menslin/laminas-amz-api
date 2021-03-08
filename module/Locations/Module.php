@@ -34,7 +34,7 @@ class Module implements ApiToolsProviderInterface
                 },
                         
                 LocalMapper::class => function($container) {
-                    return new LocalMapper($container->get('LocalTableGateway'));
+                    return new LocalMapper($container->get('LocalTableGateway'), $container->get('LocalTypeTableGateway'));
                 },
             ],
         ];
