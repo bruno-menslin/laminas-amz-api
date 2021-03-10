@@ -33,7 +33,7 @@ class LocalTypeController extends AbstractActionController
                 
                 $oldType = $this->fetch($id);
                 if ($oldType->name === $content->name) {
-                    return ['Nothing to update'];
+                    throw new RuntimeException(sprintf('Nothing to update'));
                 }
                 
                 $data = [
