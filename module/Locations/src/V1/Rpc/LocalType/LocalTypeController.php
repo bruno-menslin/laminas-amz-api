@@ -66,7 +66,11 @@ class LocalTypeController extends AbstractActionController
             
             case "DELETE":
                 $id = (int) $content->id;
+                
+                $this->checkDelete($id);
+                        
                 return $this->tableGateway->delete(['id' => $id]);
+                break;
         }
     }
     
@@ -91,5 +95,18 @@ class LocalTypeController extends AbstractActionController
     	$result = $this->tableGateway->selectWith($select);
 
     	return $result->toArray();
+    }
+    
+    public function checkDelete($id)
+    {
+        $select = $this->tableGateway->getSql()->select();
+        $select->columns(['id']); 
+        $select->join('locations', 'local_type.id = locations.type_id');    
+        $select->where("type_id = {$id}");
+    	$rowset = $this->tableGateway->selectWith($select);
+        
+        if (!empty($rowset->toArray())) {
+            throw new RuntimeException(sprintf('There are places linked to this type'));
+        }
     }
 }
