@@ -215,6 +215,7 @@ return [
                 0 => 'POST',
                 1 => 'PATCH',
                 2 => 'GET',
+                3 => 'DELETE',
             ],
             'route_name' => 'locations.rpc.local-type',
         ],

@@ -27,8 +27,8 @@ class LocalTypeController extends AbstractActionController
                 
                 return $this->tableGateway->insert($data);                                
                 break;
-            case "PATCH":
-                
+            
+            case "PATCH":                
                 $id = (int) $content->id;      
                 
                 $oldType = $this->fetch($id);
@@ -51,8 +51,14 @@ class LocalTypeController extends AbstractActionController
                     
                 return $this->tableGateway->update($data, ['id' => $id]);                
                 break;
+                
             case "GET":
                 return $this->fetchAll();
+                break;
+            
+            case "DELETE":
+                $id = (int) $content->id;
+                return $this->tableGateway->delete(['id' => $id]);
         }
     }
     
