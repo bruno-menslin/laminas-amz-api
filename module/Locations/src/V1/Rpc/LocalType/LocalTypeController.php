@@ -53,7 +53,15 @@ class LocalTypeController extends AbstractActionController
                 break;
                 
             case "GET":
-                return $this->fetchAll();
+                
+                $id = (int) $content->id;
+                
+                if ($id === 0) {
+                    return $this->fetchAll();    
+                } else {
+                    return $this->fetch($id);
+                }
+                
                 break;
             
             case "DELETE":
@@ -65,7 +73,7 @@ class LocalTypeController extends AbstractActionController
     public function fetch($id)
     {
         $rowset = $this->tableGateway->select(['id' => $id]);
-        $row = $rowset->current();
+        $row = $rowset->toArray();
         if (!$row) {
             throw new RuntimeException(sprintf(
                 'Could not find row with identifier %d',
