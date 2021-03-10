@@ -29,7 +29,13 @@ class LocalTypeController extends AbstractActionController
                 break;
             case "PATCH":
                 
-                $id = (int) $content->id;                 
+                $id = (int) $content->id;      
+                
+                $oldType = $this->fetch($id);
+                if ($oldType->name === $content->name) {
+                    return ['Nothing to update'];
+                }
+                
                 $data = [
                     'name' => $content->name
                 ];
