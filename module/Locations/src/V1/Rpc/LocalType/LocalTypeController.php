@@ -80,7 +80,7 @@ class LocalTypeController extends AbstractActionController
                 $id
             ));
         }
-        return $row;
+        return $row[0];
     }
     
     public function fetchAll()
