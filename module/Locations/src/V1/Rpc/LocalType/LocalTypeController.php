@@ -31,24 +31,23 @@ class LocalTypeController extends AbstractActionController
             case "PATCH":                
                 $id = (int) $content->id;      
                 
-                $oldType = $this->fetch($id);
-                if ($oldType->name === $content->name) {
-                    throw new RuntimeException(sprintf('Nothing to update'));
-                }
-                
-                $data = [
-                    'name' => $content->name
-                ];
-
                 try {
-                    $this->fetch($id);
+                    $oldType = $this->fetch($id);
                 } catch (RuntimeException $e) {
                     throw new RuntimeException(sprintf(
                         'Cannot update local type with identifier %d; does not exist',
                         $id
                     ));
                 }
-                    
+                
+                if ($oldType['name'] === $content->name) {
+                    return true; // para a execução
+                }
+                
+                $data = [
+                    'name' => $content->name
+                ];
+                                    
                 return $this->tableGateway->update($data, ['id' => $id]);                
                 break;
                 
