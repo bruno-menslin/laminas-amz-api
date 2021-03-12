@@ -66,14 +66,16 @@ class LocalMapper
         $data = [];        
         $id = (int) $local->id;
         
-        try { 
-            $this->fetchType($local->type_id);
-        } catch (RuntimeException $e) {
-            throw new RuntimeException(sprintf(
-                'Local type with identifier %d; does not exist',
-                $local->type_id
-            ));
-        }
+        if ($local->type_id !== null) {
+            try { 
+                $this->fetchType($local->type_id);
+            } catch (RuntimeException $e) {
+                throw new RuntimeException(sprintf(
+                    'Local type with identifier %d; does not exist',
+                    $local->type_id
+                ));
+            }   
+        }        
         
         if ($id === 0) { 
             // add   
