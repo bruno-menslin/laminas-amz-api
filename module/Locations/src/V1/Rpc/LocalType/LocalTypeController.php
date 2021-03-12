@@ -65,8 +65,13 @@ class LocalTypeController extends AbstractActionController
             
             case "DELETE":
                 $id = (int) $content->id;
-                
-                $this->checkDelete($id);
+                    
+//                $this->checkDelete($id);
+                try { // try-catch necessario?
+                    $this->checkDelete($id);
+                } catch (RuntimeException $e) {
+                    throw new RuntimeException(sprintf($e->getMessage()));
+                }
                         
                 return $this->tableGateway->delete(['id' => $id]);
                 break;
