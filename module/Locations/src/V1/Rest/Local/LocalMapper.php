@@ -107,7 +107,7 @@ class LocalMapper
         }
         
         if (empty($data)) {
-            throw new RuntimeException(sprintf('Nothing to update'));
+            return true;
         }
                 
         return $this->tableGateway->update($data, ['id' => $id]);  
@@ -115,6 +115,12 @@ class LocalMapper
     
     public function delete($id)
     {
+        try {
+            $this->fetch($id);
+        } catch (RuntimeException $e) {
+            throw new RuntimeException(sprintf($e->getMessage()));
+        }
+        
         return $this->tableGateway->delete(['id' => (int) $id]);
     }
 }
